@@ -31,7 +31,8 @@ echo -e "-----------------------------------------------------------------------
 
 reflector -a 48 -c $iso -f 5 -l 20 --sort rate --save /etc/pacman.d/mirrorlist
 mkdir /mnt
-
+mkdir /mnt/boot
+mkdir /mnt/boot/efi
 
 echo -e "\nInstalling prereqs...\n$HR"
 pacman -S --noconfirm gptfdisk btrfs-progs
@@ -85,10 +86,10 @@ reboot now
 esac
 
 # mount target
-mount -t ext4 -L ROOT /mnt
+mkdir /mnt
+mount ${DISK}3 -L ROOT /mnt
 mkdir /mnt/boot
-mkdir /mnt/boot/efi
-mount -t vfat -L EFIBOOT /mnt/boot/
+mount ${DISK}2 -L EFIBOOT /mnt/boot/
 
 if ! grep -qs '/mnt' /proc/mounts; then
     echo "Drive is not mounted can not continue"
@@ -98,7 +99,7 @@ if ! grep -qs '/mnt' /proc/mounts; then
     reboot now
 fi
 
-echo "--------------------------------------"pacman -S --noconfirm gptfdisk btrfs-progs
+pacman -S --noconfirm gptfdisk btrfs-progs
 pacstrap /mnt base base-devel linux linux-firmware vim nano sudo archlinux-keyring wget libnewt --noconfirm --needed
 genfstab -U /mnt >> /mnt/etc/fstab
 echo "keyserver hkp://keyserver.ubuntu.com" >> /mnt/etc/pacman.d/gnupg/gpg.conf
