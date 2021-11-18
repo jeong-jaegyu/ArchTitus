@@ -8,15 +8,6 @@
 #  ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝   ╚═╝   ╚═╝   ╚═╝    ╚═════╝ ╚══════╝
 #-------------------------------------------------------------------------
 
-echo -e "\nFINAL SETUP AND CONFIGURATION"
-echo "--------------------------------------"
-echo "-- GRUB EFI Bootloader Install&Check--"
-echo "--------------------------------------"
-if [[ -d "/sys/firmware/efi" ]]; then
-    grub-install --efi-directory=/boot ${DISK}
-fi
-grub-mkconfig -o /boot/grub/grub.cfg
-
 # ------------------------------------------------------------------------
 
 echo -e "\nEnabling Login Display Manager"

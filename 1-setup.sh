@@ -70,7 +70,9 @@ PKGS=(
 'autoconf' # build
 'automake' # build
 'base'
+'base-devel'
 'bash-completion'
+'bc'
 'bind'
 'binutils'
 'bison'
@@ -89,6 +91,7 @@ PKGS=(
 'cups'
 'dialog'
 'discover'
+'dkms'
 'dolphin'
 'dosfstools'
 'dtc'
@@ -103,12 +106,9 @@ PKGS=(
 'fuseiso'
 'gamemode'
 'gcc'
-'gimp' # Photo editing
 'git'
 'gparted' # partition management
 'gptfdisk'
-'grub'
-'grub-customizer'
 'gst-libav'
 'gst-plugins-good'
 'gst-plugins-ugly'
