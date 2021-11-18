@@ -67,13 +67,13 @@ fi
 # make filesystems
 echo -e "\nCreating Filesystems...\n$HR"
 if [[ ${DISK} =~ "nvme" ]]; then
-mkfs.vfat -F32 -n "EFIBOOT" "${DISK}p2"
-mkfs.ext4 -L "ROOT" "${DISK}p3"
+mkfs.vfat -F32 "${DISK}p2"
+mkfs.ext4 "${DISK}p3"
 mount "${DISK}p3" /mnt
 else
-mkfs.vfat -F32 -n "EFIBOOT" "${DISK}2"
-mkfs.ext4 -L "ROOT" "${DISK}3"
-mount -t ext4 "${DISK}3" /mnt
+mkfs.vfat -F32 "${DISK}2"
+mkfs.ext4 "${DISK}3"
+mount "${DISK}3" /mnt
 fi
 umount /mnt
 ;;
@@ -87,9 +87,9 @@ esac
 
 # mount target
 mkdir /mnt
-mount ${DISK}3 -L ROOT /mnt
+mount ${DISK}3 /mnt
 mkdir /mnt/boot
-mount ${DISK}2 -L EFIBOOT /mnt/boot/
+mount ${DISK}2 /mnt/boot/
 
 if ! grep -qs '/mnt' /proc/mounts; then
     echo "Drive is not mounted can not continue"
