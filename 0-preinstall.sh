@@ -68,11 +68,11 @@ fi
 echo -e "\nCreating Filesystems...\n$HR"
 if [[ ${DISK} =~ "nvme" ]]; then
 mkfs.vfat -F32 -n "EFIBOOT" "${DISK}p2"
-mkfs.ext4 -L "ROOT" "${DISK}p3" -f
+mkfs.ext4 -L "ROOT" "${DISK}p3"
 mount -t ext4 "${DISK}p3" /mnt
 else
 mkfs.vfat -F32 -n "EFIBOOT" "${DISK}2"
-mkfs.ext4 -L "ROOT" "${DISK}3" -f
+mkfs.ext4 -L "ROOT" "${DISK}3
 mount -t ext4 "${DISK}3" /mnt
 fi
 umount /mnt
