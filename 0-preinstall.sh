@@ -67,15 +67,13 @@ fi
 echo -e "\nCreating Filesystems...\n$HR"
 if [[ ${DISK} =~ "nvme" ]]; then
 mkfs.vfat -F32 -n "EFIBOOT" "${DISK}p2"
-mkfs.btrfs -L "ROOT" "${DISK}p3" -f
-mount -t btrfs "${DISK}p3" /mnt
+mkfs.ext4 -L "ROOT" "${DISK}p3" -f
+mount -t ext4 "${DISK}p3" /mnt
 else
 mkfs.vfat -F32 -n "EFIBOOT" "${DISK}2"
-mkfs.btrfs -L "ROOT" "${DISK}3" -f
-mount -t btrfs "${DISK}3" /mnt
+mkfs.ext4 -L "ROOT" "${DISK}3" -f
+mount -t ext4 "${DISK}3" /mnt
 fi
-ls /mnt | xargs btrfs subvolume delete
-btrfs subvolume create /mnt/@
 umount /mnt
 ;;
 *)
@@ -87,7 +85,7 @@ reboot now
 esac
 
 # mount target
-mount -t btrfs -o subvol=@ -L ROOT /mnt
+mount -t ext4 -L ROOT /mnt
 mkdir /mnt/boot
 mkdir /mnt/boot/efi
 mount -t vfat -L EFIBOOT /mnt/boot/
@@ -100,9 +98,7 @@ if ! grep -qs '/mnt' /proc/mounts; then
     reboot now
 fi
 
-echo "--------------------------------------"
-echo "-- Arch Install on Main Drive       --"
-echo "--------------------------------------"
+echo "--------------------------------------"pacman -S --noconfirm gptfdisk btrfs-progs
 pacstrap /mnt base base-devel linux linux-firmware vim nano sudo archlinux-keyring wget libnewt --noconfirm --needed
 genfstab -U /mnt >> /mnt/etc/fstab
 echo "keyserver hkp://keyserver.ubuntu.com" >> /mnt/etc/pacman.d/gnupg/gpg.conf
@@ -111,9 +107,7 @@ cp /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/mirrorlist
 echo "--------------------------------------"
 echo "--GRUB BIOS Bootloader Install&Check--"
 echo "--------------------------------------"
-if [[ ! -d "/sys/firmware/efi" ]]; then
-    grub-install --boot-directory=/mnt/boot ${DISK}
-fi
+
 echo "--------------------------------------"
 echo "-- Check for low memory systems <8G --"
 echo "--------------------------------------"
