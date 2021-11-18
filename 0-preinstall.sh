@@ -99,7 +99,7 @@ if ! grep -qs '/mnt' /proc/mounts; then
     reboot now
 fi
 
-if [[ ! -d "/sys/firmware/efi "]]; then
+if [[ ! -d "/sys/firmware/efi" ]]; then
     grub-install --boot-directory=/mnt/boot ${DISK}
 fi
 pacstrap /mnt base base-devel linux linux-firmware vim nano sudo archlinux-keyring wget libnewt --noconfirm --needed
